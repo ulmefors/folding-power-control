@@ -47,7 +47,7 @@ def send_folding_command(price_now):
         print(f'Socket connection error: {err}')
         return
 
-    print(f'Price (threshold): {price_now} ({PRICE_THRESHOLD)}')
+    print(f'Price (threshold): {price_now} ({PRICE_THRESHOLD})')
     command = 'pause' if price_now > PRICE_THRESHOLD else 'unpause'
     write_buf = ''
     for slot in SLOTS:
@@ -56,9 +56,11 @@ def send_folding_command(price_now):
     if len(write_buf):
         while True:
             count = sock.send(bytes(write_buf, ENCODING))
-            print(f'Sent {count} bytes')
             if count:
+                print(f'Sent {count} bytes: {write_buf[:count]}')
                 write_buf = write_buf[count:]
+            else:
+                return
 
 
 if __name__ == '__main__':
