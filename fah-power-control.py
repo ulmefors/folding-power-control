@@ -20,12 +20,12 @@ ENCODING = config['encoding']
 
 def get_rows_from_table(tr_elements):
     """
-    # Expected data format
-    # Tidpunkt 	        Timpris (spotpris)
-    # 2020-03-16 19:00 	65.11 öre/kWh
-    # 2020-03-16 20:00 	45.22 öre/kWh
-    # 2020-03-16 21:00 	36.04 öre/kWh
-    # 2020-03-16 22:00 	10.18 öre/kWh
+    Expected data format
+    Tidpunkt            Timpris (spotpris)
+    2020-03-16 19:00    65.11 öre/kWh
+    2020-03-16 20:00    45.22 öre/kWh
+    2020-03-16 21:00    36.04 öre/kWh
+    2020-03-16 22:00    10.18 öre/kWh
     """
     return {tr[0].text_content().replace(':00', ''): float(tr[1].text_content().rstrip(UNIT)) for tr in tr_elements[1:]}
 
