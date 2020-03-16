@@ -1,0 +1,7 @@
+area: se3-stockholm  # {'se1-lulea', se2-sundsvall, se3-stockholm, se4-malmo}
+price_threshold: 40  # öre/kWh
+address: 'localhost'
+port: 36330
+slots:
+    - 0
+encoding: 'utf-8'
