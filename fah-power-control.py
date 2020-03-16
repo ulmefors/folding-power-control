@@ -1,11 +1,14 @@
 from datetime import datetime
+import os
 import socket
 
 import lxml.html as lh
 import requests
 import yaml
 
-with open('config.yaml', 'r') as stream:
+
+dir_name = os.path.dirname(os.path.abspath(__file__))
+with open(os.path.join(dir_name, 'config.yaml'), 'r') as stream:
     config = yaml.safe_load(stream)
 
 URL = f'https://elen.nu/timpriser-pa-el-for-elomrade-{config["area"]}'
