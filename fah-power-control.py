@@ -37,18 +37,18 @@ def main():
     rows = get_rows_from_table(tr_elements)
     hour_now = datetime.now().strftime(format=HOUR_FORMAT)
     price_now = rows[hour_now]
-    send_folding_command(price_now)
+    print(f'Price (threshold) at {hour_now}: {price_now} ({PRICE_THRESHOLD})')
+    command = 'pause' if price_now > PRICE_THRESHOLD else 'unpause'
+    send_folding_command(command)
 
 
-def send_folding_command(price_now):
+def send_folding_command(command):
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     err = sock.connect_ex((ADDRESS, PORT))
     if err != 0:
         print(f'Socket connection error: {err}')
         return
 
-    print(f'Price (threshold): {price_now} ({PRICE_THRESHOLD})')
-    command = 'pause' if price_now > PRICE_THRESHOLD else 'unpause'
     write_buf = ''
     for slot in SLOTS:
         write_buf += f'{command} {slot}\n'
