@@ -7,14 +7,18 @@ import requests
 import yaml
 
 
+# Load config file
 dir_name = os.path.dirname(os.path.abspath(__file__))
 with open(os.path.join(dir_name, 'config.yaml'), 'r') as stream:
     config = yaml.safe_load(stream)
 
+# Data config
 URL = f'https://elen.nu/timpriser-pa-el-for-elomrade-{config["area"]}'
 UNIT = ' öre/kWh'
 HOUR_FORMAT = '%Y-%m-%d %H'
 PRICE_THRESHOLD = config['price_threshold']
+
+# Message config
 ADDRESS = config['address']
 PORT = config['port']
 SLOTS = config['slots']
@@ -40,12 +44,12 @@ def main():
     rows = get_rows_from_table(tr_elements)
     hour_now = datetime.now().strftime(format=HOUR_FORMAT)
     price_now = rows[hour_now]
-    print(f'Price (threshold) at {hour_now}: {price_now} ({PRICE_THRESHOLD})')
+    price_msg = f'Price (threshold) at {hour_now}: {price_now} ({PRICE_THRESHOLD})'
     command = 'pause' if price_now > PRICE_THRESHOLD else 'unpause'
-    send_folding_command(command)
+    send_folding_command(command, price_msg)
 
 
-def send_folding_command(command):
+def send_folding_command(command, price_msg):
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     err = sock.connect_ex((ADDRESS, PORT))
     if err != 0:
@@ -60,7 +64,8 @@ def send_folding_command(command):
         while True:
             count = sock.send(bytes(write_buf, ENCODING))
             if count:
-                print(f'Sent {count} bytes: {write_buf[:count]}')
+                command_msg = f'Sent {count} bytes: {write_buf[:count]}'
+                print(price_msg, command_msg.strip())
                 write_buf = write_buf[count:]
             else:
                 return
