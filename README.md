@@ -20,5 +20,7 @@ pip install -r requirements.txt
 $ sudo touch /var/log/fah-power-control.log
 $ sudo chmod 777 /var/log/fah-power-control.log
 $ crontab -e
->>> 0 * * * * /path/to/envs/bin/python /path/to/fah-power-control.py >> /var/log/fah-power-control.log 2>&1
+
+# m h dom mon dow command
+0 * * * * /path/to/envs/bin/python /path/to/fah-power-control.py >> /var/log/fah-power-control.log 2>&1
 ```
