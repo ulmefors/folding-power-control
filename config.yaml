@@ -2,7 +2,7 @@ area: se3-stockholm  # {'se1-lulea', se2-sundsvall, se3-stockholm, se4-malmo}
 price_threshold: 40  # öre/kWh
 address: 'localhost'  # Socket address
 port: 36330  # Socket port
-fah_config_files:  # Include slots from config files
+config_files:  # Include slots from config files
     - '/etc/fahclient/config.xml'
     - '/var/lib/fahclient/config.xml'
 slots:  # Include slots explicitly

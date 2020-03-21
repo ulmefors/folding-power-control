@@ -25,7 +25,7 @@ ADDRESS = config['address']
 PORT = config['port']
 SLOTS = config['slots']
 ENCODING = config['encoding']
-FAH_CONFIG_FILES = config['fah_config_files']
+FAH_CONFIG_FILES = config['config_files']
 
 
 def f_price(p):
