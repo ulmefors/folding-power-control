@@ -25,7 +25,7 @@ ADDRESS = config['address']
 PORT = config['port']
 SLOTS = config['slots']
 ENCODING = config['encoding']
-FAH_CONFIG_FILES = config['config_files']
+FAH_CONFIG_FILE = config['config_file']
 
 
 def f_price(p):
@@ -51,23 +51,20 @@ def get_data():
     page = requests.get(URL)
     doc = lh.fromstring(page.content)
     tr_elements = doc.xpath('//tr')
-    return {tr[0].text_content(): float(tr[1].text_content().rstrip(UNIT)) for tr in tr_elements[1:]}
+    return {tr[0].text_content(): float(tr[1].text_content().rstrip(UNIT).replace(',', '.')) for tr in tr_elements[1:]}
 
 
 def get_slots():
     slots = SLOTS if SLOTS else []
-    for file in FAH_CONFIG_FILES:
-        try:
-            tree = ET.parse(file)
-        except FileNotFoundError as e:
-            logging.warning(e)
-            continue
-
+    try:
+        tree = ET.parse(FAH_CONFIG_FILE)
         for child in tree.getroot().findall('slot'):
             try:
                 slots.append(int(child.attrib['id']))
             except ValueError as e:
                 logging.error(f'Failed to parse slot: {e}')
+    except FileNotFoundError as e:
+        logging.warning(e)
     return set(slots)
 
 
